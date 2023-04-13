@@ -6,5 +6,6 @@ class Record():
         self.text = text
 
     def getTextRecord(self):
-        txt =   f"{self.title}{self.text}"
+        txt =   f"{self.title}|{self.text}"
+
     
