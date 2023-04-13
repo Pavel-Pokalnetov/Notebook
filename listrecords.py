@@ -10,7 +10,7 @@ class ListRecords:
     def add(self, record):
         self.listRecords[record.id] = record
 
-    def search_Text(self, textToSearch):
+    def get_by_Text(self, textToSearch):
         result = []
         for key, record in self.listRecords.items():
             if record.getTextRecord() in textToSearch:
@@ -20,8 +20,14 @@ class ListRecords:
     def clean(self):
         self.listRecords = {}
 
-    def del_By_Id(self, id):
+    def del_by_Id(self, id):
         self.listRecords.pop(id)
 
     def get_by_Id(self, id):
         return self.listRecords[id]
+
+    def getJSON(self):
+        pass
+
+    def getCSV(self):
+        pass

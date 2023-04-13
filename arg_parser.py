@@ -7,11 +7,10 @@ def argParser(command_line_args):
     group.add_argument("-a", "--add", action='store_true', help="Adding notes", )
     group.add_argument("-d", "--delete", action='store_true', help="Delete notes")
     group.add_argument("-v", "--view", action='store_true', help="View and search for notes")
-    group.add_argument("-e", "--export", nargs=1, default=None, choices=["csv", "json"],
+    group.add_argument("-e", "--exp", nargs=1, default='-', choices=["csv", "json"],
                        help="Export to CSV or JSON format")
-    group.add_argument("-i", "--import", nargs=1, default=None, choices=["csv", "json"],
+    group.add_argument("-i", "--imp", nargs=1, default='-', choices=["csv", "json"],
                        help="Import from CSV or JSON format")
-
     pars.add_argument("--title", nargs="*", default="", help="note title")
     pars.add_argument("--text", nargs="*", default="", help="note text")
     pars.add_argument("--id", nargs="?", default="", )
