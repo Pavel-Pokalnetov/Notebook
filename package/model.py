@@ -1,7 +1,7 @@
 import sqlite3 as sl
 
-from listrecords import ListRecords
-from record import Record
+from package.listrecords import ListRecords
+from package.record import Record
 
 
 class Model:
@@ -32,15 +32,30 @@ class Model:
             exit()
         records = ListRecords()
         for id, title, text in records_slq:
-            print(id,title,text)
             records.add(Record(title, text, id))
         return records
 
     def save_notes(self, records):
-
         if len(records) == 0: return
-        for record in records.get_AllNotes:
+        try:
+            cursor = self.con.cursor()
+            cursor.execute("DROP TABLE IF EXISTS NOTES")
+            self.con.execute("""
+                            CREATE TABLE IF NOT EXISTS NOTES (
+                                id TEXT,
+                                title TEXT,
+                                text TEXT
+                            ) ;
+                        """)
+        except:
+            print('Problem with accessing the database')
+            exit()
+
+        for record in records:
             id = record.get_id()
             title = record.get_title()
             text = record.get_text()
-
+            insert_command="""INSERT INTO NOTES (id,title,text) VALUES ("{}","{}","{}");""".format(id,title,text)
+            # print(insert_command)
+            self.con.execute(insert_command)
+        self.con.commit()

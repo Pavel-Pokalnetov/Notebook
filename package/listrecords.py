@@ -1,5 +1,3 @@
-import record
-
 
 class ListRecords:
     listRecords = {}
@@ -12,7 +10,7 @@ class ListRecords:
 
     def get_by_txt(self, textToSearch):
         result = []
-        for key, record in self.listRecords.items():
+        for _, record in self.listRecords.items():
             if record.getTextRecord().find(textToSearch) != -1:
                 result.append(record)
         return result

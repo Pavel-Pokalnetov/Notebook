@@ -8,7 +8,7 @@ class Record():
         self.text = text
 
     def getTextRecord(self):
-        txt = f"{self.id}\t{self.title}\t{self.text}"
+        txt = f"{self.title}{self.text}{self.id}"
         return txt
 
     def get_id(self):
@@ -21,4 +21,4 @@ class Record():
         return self.text
 
     def get_tuple(self):
-        return (self.id,self.title,self.text)
+        return [self.title,self.text,self.id]

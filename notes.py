@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import sys
-from controller import Controller
-from model import Model
+from package.controller import Controller
+from package.model import Model
 
-DB = 'notes.db'
+DB = './data/notes.db'
 
 if __name__ == '__main__':
     model = Model(DB)

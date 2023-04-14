@@ -1,26 +1,28 @@
-import sys
-
-from arg_parser import argParser
-from listrecords import ListRecords
-from menu import Menu
-from record import Record
+from texttable import Texttable
+from package.arg_parser import argParser
+from package.menu import Menu
+from package.record import Record
 
 
 class Controller:
     def __init__(self, model):
-        self.print_help = None
         self.model = model
         self.records = self.model.load_notes()
 
     def interactive_start(self):
+        """
+        старт в интерактивном режиме
+        с ткствовым меню
+        :return:
+        """
         menuitems = [
-            ("1", "Показать все заметки", self.view_all),
-            ("2", "Добавить заметку", self.add_note),
-            ("3", "Удалить заметку", self.del_note),
-            ("4", "Поиск заметки", self.search_notes_dialog),
-            ("5", "Экспорт", self.export_notes),
-            ("6", "Импорт", self.import_notes),
-            ("2", "Помощь", self.print_help),
+            ("V", "Показать все заметки", self.view_all),
+            ("A", "Добавить заметку", self.add_note),
+            ("D", "Удалить заметку", self.del_notes_dialog),
+            ("S", "Поиск заметки", self.search_notes_dialog),
+            ("E", "Экспорт", self.export_notes),
+            ("I", "Импорт", self.import_notes),
+            ("H", "Помощь", self.print_help),
             ("Q", "Выход", self.exit_notes)]
         menu = Menu(menuitems)
         menu.prefixtext = "Заметки.\nГлавное меню\n"
@@ -56,27 +58,38 @@ class Controller:
         self.records.add(Record(title, text))
         return
 
-    def del_note(self):
+    def del_notes_dialog(self):
         return None
 
     def search_notes_dialog(self):
         while True:
-            text = input('Строка поиска(посто для выхода): ')
+            text = input('Строка поиска (пусто для выхода): ')
             if text == '': return
             result = self.records.get_by_txt(text)
+            print(result)
             if len(result) == 0:
                 print("ничего не найдено")
             else:
                 print('найдено {} записей'.format(len(result)))
+                table = Texttable(max_width=120)
+                table.header(["Заголовок", "Текст", "ID"])
                 for r in result:
-                    print(r.getTextRecord)
+                    table.add_row(r.get_tuple())
+                print(table.draw())
             print()
+
     def view_all(self):
         records = self.records.get_AllNotes()
         print("Всего записей {}".format(len(records)))
-        if len(records)>0:
+        if len(records) > 0:
+            table = Texttable(max_width=140)
+            table.header(["Заголовок", "Текст", "ID"])
             for record in records:
-                print(record.getTextRecord())
+                title, text, id = record.get_tuple()
+                table.add_row([title, text, id])
+            table.set_cols_align(['l', 'l', 'r'])
+            # table.set_deco(Texttable.HEADER | Texttable.BORDER)
+            print(table.draw())
 
     def export_notes(self, filename):
         return None
@@ -85,7 +98,7 @@ class Controller:
         return None
 
     def exit_notes(self):
-        self.model.save_notes(self.records)
+        self.model.save_notes(self.records.get_AllNotes())
         exit(0)
 
     def delete(self, id, text):
@@ -100,3 +113,12 @@ class Controller:
             if record.getTextRecord().lower().find(search) != -1:
                 result.append(record)
         return result
+
+    def print_help(self):
+        Menu().clrscr()
+        try:
+            with open('help', encoding='utf-8', mode="r") as help_file:
+                text = help_file.read()
+                print(text, end='\n\n')
+        except:
+            print('help not found')
