@@ -12,27 +12,29 @@ class Menu:  # класс меню
 
     def __init__(self, elenemts=[]):
         self.elements = elenemts
-
+        self.prefixtext=''
     def print(self):
+        print(self.prefixtext,end='')
         for (mark, text, _) in self.elements:
             print('{} - {}'.format(mark, text))
 
     def run(self, prompt='выберите команду: '):
-        def clrscr(): return system('cls')
-        while (True):
-            clrscr()
+
+        while True:
+            self.clrscr()
             self.print()
             user_choice = input(prompt)
             for (mark, _, rummethod) in self.elements:
-                if user_choice == mark:
+                if user_choice.lower() == mark.lower():
                     if rummethod == -1:
-                        return True 
-                    clrscr()
+                        return True
+                    self.clrscr()
                     rummethod()
+                    input("Ввод для продолжения...")
                     break
-
 
     def __len__(self):  # размер меню
         return len(self.elements)
 
-
+    def clrscr(self):
+        system('cls')

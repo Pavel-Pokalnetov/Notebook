@@ -2,8 +2,9 @@
 # -*- coding: UTF-8 -*-
 import sys
 from controller import Controller
+from model import Model
 
-DB='notes.db'
+DB = 'notes.db'
 
 if __name__ == '__main__':
     model = Model(DB)
