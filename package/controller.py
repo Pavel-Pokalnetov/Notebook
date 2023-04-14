@@ -65,13 +65,13 @@ class Controller:
         while True:
             text = input('Строка поиска (пусто для выхода): ')
             if text == '': return
-            result = self.records.get_by_txt(text)
-            print(result)
+            result = self.records.get_by_txt(text.lower())
+            # print(result)
             if len(result) == 0:
                 print("ничего не найдено")
             else:
                 print('найдено {} записей'.format(len(result)))
-                table = Texttable(max_width=120)
+                table = Texttable(max_width=100)
                 table.header(["Заголовок", "Текст", "ID"])
                 for r in result:
                     table.add_row(r.get_tuple())
@@ -82,7 +82,7 @@ class Controller:
         records = self.records.get_AllNotes()
         print("Всего записей {}".format(len(records)))
         if len(records) > 0:
-            table = Texttable(max_width=140)
+            table = Texttable(max_width=100)
             table.header(["Заголовок", "Текст", "ID"])
             for record in records:
                 title, text, id = record.get_tuple()

@@ -11,7 +11,7 @@ class ListRecords:
     def get_by_txt(self, textToSearch):
         result = []
         for _, record in self.listRecords.items():
-            if record.getTextRecord().find(textToSearch) != -1:
+            if record.getTextRecord().lower().find(textToSearch) != -1:
                 result.append(record)
         return result
 
