@@ -34,8 +34,8 @@ class Model:
             records.add(Record(title, text, id))
         return records
 
-    def save_notes(self, records, force=False):
-        if len(records) == 0 and force != True:
+    def save_notes(self, records: ListRecords, force=False):
+        if len(records.get_AllNotes()) == 0 and force != True:
             return
         try:
             cursor = self.con.cursor()

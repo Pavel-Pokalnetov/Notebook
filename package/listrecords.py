@@ -1,5 +1,7 @@
 
+from copy import copy
 from package.record import Record
+import json
 
 
 class ListRecords:
@@ -8,41 +10,50 @@ class ListRecords:
     def __init__(self):
         self.clean()
 
-    def add(self, record):#ok
-        self.listRecords[record.id] = record
+    def get_dict(self):
+        return copy(self.listRecords)
 
-    def get_by_txt(self, textToSearch):#ok
-        result:Record = []
-        for _, record in self.listRecords.items():
-            if record.getTextRecord().lower().find(textToSearch) != -1:
-                result.append(record)
-        return result
+    def add(self, record):  # ok
+        self.listRecords[record.id] = record
 
     def clean(self):
         self.listRecords = {}
 
-    def del_by_Text(self, id):
-
-        self.listRecords.pop(id)
+    def get_by_text(self, text):
+        result: Record = []
+        for record in self.listRecords.values():
+            if record.getTextRecord().lower().find(text) != -1:
+                result.append(record)
+        return result
 
     def del_by_id(self, id):
         if id in self.listRecords:
             self.listRecords.pop(id)
 
-
-
-    def get_by_Id(self, id):
+    def get_by_id(self, id):
         return self.listRecords[id]
 
     def get_JSON(self):
-        pass
+        record: Record
+        jsondict = {}
+        for id, record in self.listRecords.items():
+            jsondict[id] = {'title': record.get_title(),
+                            'text': record.get_text()}
+        return json.dumps(jsondict,
+                          sort_keys=False,
+                          ensure_ascii=False,
+                          separators=(',', ':'))
 
     def get_CSV(self):
-        pass
+        # record:Record
+        csv_raw = ""
+        for record in self.listRecords.values():
+            csv_raw += record.get_csv()+"\n"
+        return csv_raw
 
     def get_AllNotes(self):
         result = []
-        for _, record in self.listRecords.items():
+        for record in self.listRecords.values():
             result.append(record)
         return result
 

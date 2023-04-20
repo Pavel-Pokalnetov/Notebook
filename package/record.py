@@ -7,9 +7,11 @@ class Record():
         self.title = title
         self.text = text
 
+    def get_csv(self):
+        return f"{self.id},\"{self.title}\",\"{self.text}\""
+
     def getTextRecord(self):
-        txt = f"{self.title}{self.text}{self.id}"
-        return txt
+        return f"{self.title}{self.text}{self.id}"
 
     def get_id(self):
         return self.id
@@ -21,4 +23,4 @@ class Record():
         return self.text
 
     def get_tuple(self):
-        return [self.title,self.text,self.id]
+        return [self.title, self.text, self.id]
