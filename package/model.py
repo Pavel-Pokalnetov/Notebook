@@ -34,8 +34,9 @@ class Model:
             records.add(Record(title, text, id))
         return records
 
-    def save_notes(self, records,force=False):
-        if len(records) == 0 and force!=True: return
+    def save_notes(self, records, force=False):
+        if len(records) == 0 and force != True:
+            return
         try:
             cursor = self.con.cursor()
             cursor.execute("DROP TABLE IF EXISTS NOTES")
@@ -54,7 +55,8 @@ class Model:
             id = record.get_id()
             title = record.get_title()
             text = record.get_text()
-            insert_command="""INSERT INTO NOTES (id,title,text) VALUES ("{}","{}","{}");""".format(id,title,text)
+            insert_command = """INSERT INTO NOTES (id,title,text) VALUES ("{}","{}","{}");""".format(
+                id, title, text)
             # print(insert_command)
             self.con.execute(insert_command)
         self.con.commit()
