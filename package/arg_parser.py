@@ -1,6 +1,5 @@
 import argparse
 
-
 def argParser(command_line_args):
     pars = argparse.ArgumentParser()
     group = pars.add_mutually_exclusive_group(required=False)
@@ -14,7 +13,5 @@ def argParser(command_line_args):
     pars.add_argument("--title", nargs="*", default="", help="note title")
     pars.add_argument("--text", nargs="*", default="", help="note text")
     pars.add_argument("--id", nargs="?", default="", )
-    pars.add_argument("--filename", nargs=1, default="", help="Name of file")
-
+    pars.add_argument("--filename", nargs=1, default="", help="Name of file") 
     return pars.parse_args(command_line_args)
-

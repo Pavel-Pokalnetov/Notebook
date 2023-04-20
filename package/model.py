@@ -5,7 +5,6 @@ from package.record import Record
 
 
 class Model:
-
     def __init__(self, database):
         try:
             self.con = sl.connect(database)
@@ -35,8 +34,8 @@ class Model:
             records.add(Record(title, text, id))
         return records
 
-    def save_notes(self, records):
-        if len(records) == 0: return
+    def save_notes(self, records,force=False):
+        if len(records) == 0 and force!=True: return
         try:
             cursor = self.con.cursor()
             cursor.execute("DROP TABLE IF EXISTS NOTES")
@@ -45,13 +44,13 @@ class Model:
                                 id TEXT,
                                 title TEXT,
                                 text TEXT
-                            ) ;
+                            );
                         """)
         except:
             print('Problem with accessing the database')
             exit()
 
-        for record in records:
+        for record in records.get_AllNotes():
             id = record.get_id()
             title = record.get_title()
             text = record.get_text()

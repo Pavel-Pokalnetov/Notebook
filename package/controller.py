@@ -1,10 +1,15 @@
 from texttable import Texttable
 from package.arg_parser import argParser
+from package.listrecords import ListRecords
 from package.menu import Menu
+from package.model import Model
 from package.record import Record
 
 
 class Controller:
+    records:ListRecords    
+    model: Model
+
     def __init__(self, model):
         self.model = model
         self.records = self.model.load_notes()
@@ -34,21 +39,48 @@ class Controller:
         :param commandline_args: аргументы командной строки
         """
         arg = argParser(commandline_args)
+        # print(arg)
+        self.records = self.model.load_notes()
+        title=' '.join(arg.title)
+        text=' '.join(arg.text)
         print(arg)
-        if arg.add:
-            records = self.model.load_notes()
-            records.add(title=arg.title, text=arg.text)
+        self.view_all()
+        print('#'*40)
+        force = False
+        if arg.add:#добавление строки OK
+            self.add_cli(title, text) 
+        
         elif arg.delete:
-            self.delete(id=arg.id, text=arg.text)
+            self.delete_cli(id=arg.id, text=arg.text) #удаление 
+            force=True
+
         elif arg.search_notes:
-            self.search_notes(id=arg.id, text=arg.text)
+            self.search_notes(id=arg.id, text=text)
+        
         elif arg.imp != '-':
             self.import_notes(filename=arg.filename)
+        
         elif arg.exp != '-':
             self.export_notes(filename=arg.filename)
+        
         else:
             exit(1)
+        self.view_all()
+
+        self.model.save_notes(self.records,force)
         exit(0)
+
+    def add_cli(self, title, text):
+        if (title=='' and text!=''):
+            print(" пропущен обязательный параметр --tite ")
+            exit()
+        if (title!='' and text==''):
+            print(" пропущен обязательный параметр --text ")
+            exit()
+        if (title=='' and text==''):
+            self.add_note()
+        else:
+            self.records.add(Record(title, text))
 
     def add_note(self):
         title = input('Заголовок: ')
@@ -59,6 +91,7 @@ class Controller:
         return
 
     def del_notes_dialog(self):
+
         return None
 
     def search_notes_dialog(self):
@@ -66,17 +99,19 @@ class Controller:
             text = input('Строка поиска (пусто для выхода): ')
             if text == '': return
             result = self.records.get_by_txt(text.lower())
-            # print(result)
             if len(result) == 0:
                 print("ничего не найдено")
             else:
                 print('найдено {} записей'.format(len(result)))
-                table = Texttable(max_width=100)
-                table.header(["Заголовок", "Текст", "ID"])
-                for r in result:
-                    table.add_row(r.get_tuple())
-                print(table.draw())
+                self.printTable(result)
             print()
+
+    def printTable(self, result):
+        table = Texttable(max_width=100)
+        table.header(["Заголовок", "Текст", "ID"])
+        for r in result:
+            table.add_row(r.get_tuple())
+        print(table.draw())
 
     def view_all(self):
         records = self.records.get_AllNotes()
@@ -101,8 +136,15 @@ class Controller:
         self.model.save_notes(self.records.get_AllNotes())
         exit(0)
 
-    def delete(self, id, text):
-        pass
+    def delete_cli(self, id, text):
+        if (id=='' and text==''):
+            self.records.clean()
+        if (id!=''):
+            self.records.del_by_id(id)
+        if (text!=''):
+            self.records.del_by_Text(text)
+        
+        
 
     def search_notes(self, id, text):
         if len(self.records) == 0:

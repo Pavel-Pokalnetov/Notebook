@@ -1,15 +1,18 @@
 
+from package.record import Record
+
+
 class ListRecords:
     listRecords = {}
 
     def __init__(self):
         self.clean()
 
-    def add(self, record):
+    def add(self, record):#ok
         self.listRecords[record.id] = record
 
-    def get_by_txt(self, textToSearch):
-        result = []
+    def get_by_txt(self, textToSearch):#ok
+        result:Record = []
         for _, record in self.listRecords.items():
             if record.getTextRecord().lower().find(textToSearch) != -1:
                 result.append(record)
@@ -18,8 +21,15 @@ class ListRecords:
     def clean(self):
         self.listRecords = {}
 
-    def del_by_Id(self, id):
+    def del_by_Text(self, id):
+
         self.listRecords.pop(id)
+
+    def del_by_id(self, id):
+        if id in self.listRecords:
+            self.listRecords.pop(id)
+
+
 
     def get_by_Id(self, id):
         return self.listRecords[id]
