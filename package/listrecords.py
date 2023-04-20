@@ -1,10 +1,11 @@
 
 from copy import copy
+from typing import TypedDict
 from package.record import Record
 import json
-
-
 class ListRecords:
+    
+
     listRecords = {}
 
     def __init__(self):
@@ -13,14 +14,15 @@ class ListRecords:
     def get_dict(self):
         return copy(self.listRecords)
 
-    def add(self, record):  # ok
+    def add(self, record:Record):  # ok
         self.listRecords[record.id] = record
+        return record.get_id()
 
     def clean(self):
         self.listRecords = {}
 
     def get_by_text(self, text):
-        result: Record = []
+        result = []
         for record in self.listRecords.values():
             if record.getTextRecord().lower().find(text) != -1:
                 result.append(record)

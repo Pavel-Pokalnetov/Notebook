@@ -14,7 +14,7 @@ class Record():
         return f"{self.title}{self.text}{self.id}"
 
     def get_id(self):
-        return self.id
+        return str(self.id)
 
     def get_title(self):
         return self.title

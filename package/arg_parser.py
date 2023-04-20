@@ -10,8 +10,9 @@ def argParser(command_line_args):
                        help="Export to CSV or JSON format")
     group.add_argument("-i", "--imp", nargs=1, default='-', choices=["csv", "json"],
                        help="Import from CSV or JSON format")
+    group.add_argument("--hlp",action='store_true', help="Full help")
     pars.add_argument("--title", nargs="*", default="", help="note title")
     pars.add_argument("--text", nargs="*", default="", help="note text")
-    pars.add_argument("--id", nargs="?", default="", )
+    pars.add_argument("--id", nargs="?", default="", help="note id")
     pars.add_argument("--filename", nargs=1, default="", help="Name of file") 
     return pars.parse_args(command_line_args)
