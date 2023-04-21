@@ -58,11 +58,13 @@ ID - внутренний идентификатор заметки
     1 - ошибка в параметрах командной строки
 
 ### Зависимости
-texttable 
+
+texttable - https://pypi.org/project/texttable/
 
 
 ### Установка
-рекомендуется работа с виртуальным окружением
-python -m venv venv
-venv\Scripts\activate.bat
-pip install texttable
+рекомендуется работа с виртуальным окружением  
+
+    python -m venv venv  
+    venv\Scripts\activate.bat  
+    pip install texttable  
