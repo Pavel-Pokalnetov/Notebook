@@ -6,7 +6,7 @@
 
 ---
 ### Запуск 
-    __python notes.py__ [COMMAND OPTION]   
+    python notes.py [COMMAND OPTION]   
 COMMAND - команды    
 OPTION - опции команд
 - -a,--add --title TITLE --text TEXT - добавить заметку  
