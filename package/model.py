@@ -8,16 +8,10 @@ class Model:
     def __init__(self, database):
         try:
             self.con = sl.connect(database)
-            self.con.execute("""
-                CREATE TABLE IF NOT EXISTS NOTES (
-                    id TEXT,
-                    title TEXT,
-                    text TEXT
-                ) ;
-            """)
         except:
-            print('Problem with accessing the database')
-            exit()
+            print('проблема при открытии базы данных')
+            exit(2)
+        self.con.execute("CREATE TABLE IF NOT EXISTS NOTES (id TEXT,title TEXT,text TEXT);")
 
     def load_notes(self):
         try:
@@ -27,8 +21,8 @@ class Model:
             """)
             records_slq = cursor.fetchall()
         except:
-            print('Problem with accessing the database')
-            exit()
+            print('проблема при работе с базой данных')
+            exit(2)
         records = ListRecords()
         for id, title, text in records_slq:
             records.add(Record(title, text, id))
@@ -40,23 +34,17 @@ class Model:
         try:
             cursor = self.con.cursor()
             cursor.execute("DROP TABLE IF EXISTS NOTES")
-            self.con.execute("""
-                            CREATE TABLE IF NOT EXISTS NOTES (
-                                id TEXT,
-                                title TEXT,
-                                text TEXT
-                            );
-                        """)
+            self.con.execute("CREATE TABLE IF NOT EXISTS NOTES (id TEXT,title TEXT,text TEXT);")
+            for record in records.get_AllNotes():
+                id = record.get_id()
+                title = record.get_title()
+                text = record.get_text()
+                insert_command = """INSERT INTO NOTES (id,title,text) VALUES ("{}","{}","{}");""".format(
+                    id, title, text)
+                # print(insert_command)
+                self.con.execute(insert_command)
+            self.con.commit()
+            
         except:
-            print('Problem with accessing the database')
-            exit()
-
-        for record in records.get_AllNotes():
-            id = record.get_id()
-            title = record.get_title()
-            text = record.get_text()
-            insert_command = """INSERT INTO NOTES (id,title,text) VALUES ("{}","{}","{}");""".format(
-                id, title, text)
-            # print(insert_command)
-            self.con.execute(insert_command)
-        self.con.commit()
+            print('проблема при работе с базой данных')
+            exit(2)
