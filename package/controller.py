@@ -52,7 +52,6 @@ class Controller:
 
         elif arg.delete:
             self.delete_cli(id=arg.id, text=arg.text)  #ok
-            force = True
 
         elif arg.search_notes:#ok
             result = self.search_notes(id=arg.id, text=text)
@@ -195,11 +194,11 @@ class Controller:
             result (список записей Record): _description_
         """
         table = Texttable(max_width=100)
-        table.header(["Заголовок", "Текст", "ID"])
+        table.header(["Заголовок", "Текст", "ID","Дата"])
         for record in result:
-            title, text, id = record.get_tuple()
-            table.add_row([title, text, id])
-        table.set_cols_align(['l', 'l', 'r'])
+            title, text, id,date = record.get_tuple()
+            table.add_row([title, text, id,date])
+        table.set_cols_align(['l', 'l', 'r','r'])
         # table.set_deco(Texttable.HEADER | Texttable.BORDER)
         print(table.draw())
 
@@ -217,9 +216,9 @@ class Controller:
         self.delay()
 
     def save_force(self): 
-        """форсированная запись в sqlite
+        """принудительная запись в sqlite
         """
-        self.model.save_notes(self.records, force=True)
+        self.model.save_notes(self.records)
 
     def export_notes(self):
         """экспорт заметок в интерактивном режиме
@@ -334,7 +333,7 @@ class Controller:
     def exit_notes(self):
         """запись данных в базу и завершение приложения
         """
-        self.model.save_notes(self.records)
+        self.save_force()
         exit(0)
 
     def delete_cli(self, id, text):

@@ -40,7 +40,8 @@ class ListRecords:
         jsondict = {}
         for id, record in self.listRecords.items():
             jsondict[id] = {'title': record.get_title(),
-                            'text': record.get_text()}
+                            'text': record.get_text(),
+                            'date':record.get_date()}
         return json.dumps(jsondict,
                           sort_keys=False,
                           ensure_ascii=False,
