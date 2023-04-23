@@ -1,10 +1,11 @@
 import datetime
+from hashlib import md5
 import uuid
 
 
 class Record():
     def __init__(self, title, text, id='', date=''):
-        self.id = str(uuid.uuid1()) if id == '' else id
+        self.id = md5(str(title+text).encode('utf-8')).hexdigest() if id == '' else id
         self.title = title
         self.text = text
         if date == '':
