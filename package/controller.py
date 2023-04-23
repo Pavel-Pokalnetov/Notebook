@@ -159,7 +159,7 @@ class Controller:
             return
             
         print('будет удалено', len(result), 'записей')
-        print("\n".join(result))
+        self.printTable(self.records.get_by_id_list(result))
 
         while True:
             response = input('Удаляем?(Y/N):')
@@ -193,7 +193,7 @@ class Controller:
         Args:
             result (список записей Record): _description_
         """
-        table = Texttable(max_width=100)
+        table = Texttable(max_width=120)
         table.header(["Заголовок", "Текст", "ID","Дата"])
         for record in result:
             title, text, id,date = record.get_tuple()

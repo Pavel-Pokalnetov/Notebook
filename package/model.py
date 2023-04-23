@@ -35,16 +35,16 @@ class Model:
             cursor.execute("DROP TABLE IF EXISTS NOTES")
             self.con.execute(
                 "CREATE TABLE IF NOT EXISTS NOTES (id TEXT,title TEXT,text TEXT, date TEXT);")
-            if len(records.get_AllNotes()) == 0 : return
-            for record in records.get_AllNotes():
-                id = record.get_id()
-                title = record.get_title()
-                text = record.get_text()
-                date = record.get_date()
-                insert_command = """INSERT INTO NOTES (id,title,text,date) VALUES ("{}","{}","{}","{}");""".format(
-                    id, title, text, date)
-                # print(insert_command)
-                self.con.execute(insert_command)
+            if len(records.get_AllNotes()) != 0 : 
+                for record in records.get_AllNotes():
+                    id = record.get_id()
+                    title = record.get_title()
+                    text = record.get_text()
+                    date = record.get_date()
+                    insert_command = """INSERT INTO NOTES (id,title,text,date) VALUES ("{}","{}","{}","{}");""".format(
+                        id, title, text, date)
+                    # print(insert_command)
+                    self.con.execute(insert_command)
             self.con.commit()
 
         except:

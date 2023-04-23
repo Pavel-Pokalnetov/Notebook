@@ -62,3 +62,9 @@ class ListRecords:
 
     def __len__(self):
         return len(self.listRecords)
+
+    def get_by_id_list(self,id_list:list) ->list:
+        result=[]
+        for id in id_list:
+            result.append(self.listRecords[id])
+        return result
