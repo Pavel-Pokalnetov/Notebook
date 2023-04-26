@@ -3,8 +3,9 @@ from copy import copy
 from typing import TypedDict
 from package.record import Record
 import json
+
+
 class ListRecords:
-    
 
     listRecords = {}
 
@@ -14,7 +15,7 @@ class ListRecords:
     def get_dict(self):
         return copy(self.listRecords)
 
-    def add(self, record:Record):  # ok
+    def add(self, record: Record):  # ok
         self.listRecords[record.id] = record
         return record.get_id()
 
@@ -27,13 +28,14 @@ class ListRecords:
             if record.getTextRecord().lower().find(text) != -1:
                 result.append(record)
         return result
-    
-    def get_by_date(self,date):
+
+    def get_by_date(self, date):
         result = []
         for record in self.listRecords.values():
             if record.get_date().lower().find(date) != -1:
                 result.append(record)
         return result
+
     def del_by_id(self, id):
         if id in self.listRecords:
             self.listRecords.pop(id)
@@ -47,7 +49,7 @@ class ListRecords:
         for id, record in self.listRecords.items():
             jsondict[id] = {'title': record.get_title(),
                             'text': record.get_text(),
-                            'date':record.get_date()}
+                            'date': record.get_date()}
         return json.dumps(jsondict,
                           sort_keys=False,
                           ensure_ascii=False,
@@ -69,8 +71,8 @@ class ListRecords:
     def __len__(self):
         return len(self.listRecords)
 
-    def get_by_id_list(self,id_list:list) ->list:
-        result=[]
+    def get_by_id_list(self, id_list: list) -> list:
+        result = []
         for id in id_list:
             result.append(self.listRecords[id])
         return result

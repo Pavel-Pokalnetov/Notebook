@@ -19,8 +19,9 @@ Notebook
 
     -v,--search_notes - поиск заметок
         --id ID - поиск по ID
-        --text TEXT - поиск по TEXT без 
-        опций - вывод всех записей
+        --text TEXT - поиск по TEXT 
+        --date YYYY-MM-DD - поиск по дате в формате YYYY-MM-DD, либо любые цифры года месяца или дня
+        без опций - вывод всех записей
 
     -e csv --filename FILENAME - экспорт в CSV
 
@@ -52,15 +53,3 @@ Notebook
     ;импорт заметок из файла '~/myNotes'
     Запуск python notes.py без аргументов - интерактивный режим`
 
-Коды возврата
-    0 - успешное завершение  
-    1 - ошибка в параметрах командной строки
-
-Зависимости
-    texttable 
-
-Установка
-    Рекомендуется работа с виртуальным окружением
-        python -m venv venv
-        venv\Scripts\activate.bat
-        pip install texttable

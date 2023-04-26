@@ -42,11 +42,17 @@ class Controller:
         Args:
             commandline_args (str): аргументы командной строки
         """
-        arg = argParser(commandline_args)
+        try:
+            arg = argParser().parse_args(commandline_args)
+        except:
+            print('Ошибка в параметрах или опциях командной строки.\n\n')
+            self.print_help(delay=False)
+            exit(1)
         # print(arg)
         title = ' '.join(arg.title)
         text = ' '.join(arg.text)
         filename = '' if arg.filename=='' else arg.filename[0]
+        date='' if arg.date=='' else arg.date[0]
         force = False
         if arg.add:  #ok
             self.add_cli(title, text)
@@ -55,7 +61,7 @@ class Controller:
             self.delete_cli(id=arg.id, text=arg.text)  #ok
 
         elif arg.search_notes:#ok
-            result = self.search_notes(id=arg.id, text=text)
+            result = self.search_notes(id=arg.id, text=text,date=date)
             self.printTable(result)
             return
         
@@ -80,7 +86,7 @@ class Controller:
                 print('ошибка в опциях параметра -e')
                 exit(1)
 
-        elif arg.hlp:#ok
+        elif arg.help:#ok
                 self.print_help(delay=False)
                 self.print_help_import(delay=False)
                 exit(0)
@@ -339,7 +345,8 @@ class Controller:
                     for id, recordict in jsondict.items():
                         title=recordict.get('title')
                         text=recordict.get('text')
-                        self.records.add(Record(id=id,title=title,text=text,date=data))
+                        date=recordict.get('date')
+                        self.records.add(Record(id=id,title=title,text=text,date=date))
                         count_line+=1
                 return count_line
         except:
@@ -368,23 +375,30 @@ class Controller:
         if (text != ''):
             self.records.del_by_txt(text)
 
-    def search_notes(self, id:str='', text:str=''):
-        """поиск записей по id или текстовым данным
+    def search_notes(self, id:str='', text:str='', date:str=''):
+        """поиск записей по id , дате или текстовым данным
 
         Args:
             id (str, optional): ID или часть ID записи для поиска. Defaults to ''.
             text (str, optional): текст поискового запроса. Defaults to ''.
+            date (str)
 
         Returns:
             _type_: _description_
         """
         if len(self.records) == 0:
             return []
+        if date!='':
+            return self.records.get_by_date(date)
         text = (text if id == '' else id)
         text = text.lower()
+        return self.records.get_by_text(text)
+        
+
+    def search_notes_by_date_cli(self,date):
         result = []
         for record in self.records.get_AllNotes():
-            if record.getTextRecord().lower().find(text) != -1:
+            if record.get_date().lower().find(date) != -1:
                 result.append(record)
         return result
 
@@ -394,7 +408,7 @@ class Controller:
         Args:
             delay (bool, optional): опция приостановки перед возвратом. Defaults to True.
         """
-        Menu().clrscr()
+        # Menu().clrscr()
         try:
             with open('data\help', encoding='utf-8', mode="r") as help_file:
                 text = help_file.read()

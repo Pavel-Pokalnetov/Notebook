@@ -20,7 +20,8 @@ OPTION - опции команд
 
 - -v,--search_notes - поиск заметок  
     --id ID - поиск по ID  
-    --text TEXT - поиск по TEXT  
+    --text TEXT - поиск по TEXT
+    --date YYYY-MM-DD - поиск по дате формата YYYY-MM-DD, либо любые цифры года месяца или дня  
     без опций - вывод всех записей
 
 - -e csv --filename FILENAME - экспорт в CSV
@@ -51,6 +52,8 @@ ID - внутренний идентификатор заметки
 
     - notes -i csv --filename '~\myNotes'  
     ;импорт заметок из файла '~\myNotes'  
+
+    - notes -v --date 2023-04-22
 
 Запуск __python notes.py__ без аргументов - интерактивный режим
 

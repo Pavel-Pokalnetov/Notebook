@@ -4,6 +4,7 @@ import uuid
 
 
 class Record():
+
     def __init__(self, title, text, id='', date=''):
         self.id = md5(str(title+text).encode('utf-8')).hexdigest() if id == '' else id
         self.title = title
