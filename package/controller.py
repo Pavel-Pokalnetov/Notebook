@@ -26,6 +26,7 @@ class Controller:
             ("A", "Добавить заметку", self.add_note),  # ok
             ("D", "Удалить заметку", self.del_notes_dialog),  # ok
             ("S", "Поиск заметки", self.search_notes_dialog),  # ok
+            ("SD","Поиск по дате", self.search_notes_dialog_by_date),
             ("E", "Экспорт", self.export_notes),#ok
             ("I", "Импорт", self.import_notes),#ok
             ("W", "Сохранить изменения", self.save_force),#ok
@@ -187,6 +188,22 @@ class Controller:
                 self.printTable(result)
             print()
 
+    def search_notes_dialog_by_date(self):
+        """поиск заметок по дате
+        """
+        while True:
+            text = input('Укажите дату заметки (YYYY-MM-DD): ')
+            if text == '':
+                return
+            result = self.records.get_by_date(text.lower())
+            if len(result) == 0:
+                print("ничего не найдено")
+            else:
+                print('найдено {} записей'.format(len(result)))
+                self.printTable(result)
+            print()
+
+
     def printTable(self, result:list):
         """табличный  вывод записей на экран
 
@@ -313,7 +330,7 @@ class Controller:
                 with open(fname,"r",encoding="utf-8") as fl:
                     csv_reader = csv.reader(fl,delimiter=',',quotechar='"')    
                     for line in csv_reader:
-                        self.records.add(Record(title=line[1],text=line[2],id=line[0]))
+                        self.records.add(Record(title=line[1],text=line[2],id=line[0],date=line[3]))
                         count_line+=1
                 return count_line
             else:
@@ -322,7 +339,7 @@ class Controller:
                     for id, recordict in jsondict.items():
                         title=recordict.get('title')
                         text=recordict.get('text')
-                        self.records.add(Record(id=id,title=title,text=text))
+                        self.records.add(Record(id=id,title=title,text=text,date=data))
                         count_line+=1
                 return count_line
         except:

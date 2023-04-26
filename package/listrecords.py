@@ -27,7 +27,13 @@ class ListRecords:
             if record.getTextRecord().lower().find(text) != -1:
                 result.append(record)
         return result
-
+    
+    def get_by_date(self,date):
+        result = []
+        for record in self.listRecords.values():
+            if record.get_date().lower().find(date) != -1:
+                result.append(record)
+        return result
     def del_by_id(self, id):
         if id in self.listRecords:
             self.listRecords.pop(id)
