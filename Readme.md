@@ -74,3 +74,7 @@ texttable - https://pypi.org/project/texttable/
     python -m venv venv  
     venv\Scripts\activate.bat  
     pip install texttable  
+   
+---
+
+разработывалась на Python 3.11  + vscode под windows x64
