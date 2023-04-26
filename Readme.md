@@ -77,4 +77,4 @@ texttable - https://pypi.org/project/texttable/
    
 ---
 
-разработывалась на Python 3.11  + vscode под windows x64
+разрабатывалась на Python 3.11  + vscode под windows x64
